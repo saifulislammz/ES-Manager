@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <defs>
+    <!-- Background Gradient -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#064e3b" />
+      <stop offset="45%" stop-color="#0f766e" />
+      <stop offset="100%" stop-color="#042f2e" />
+    </linearGradient>
+
+    <!-- Top Left Glass Highlight -->
+    <radialGradient id="topGlow" cx="30%" cy="25%" r="70%">
+      <stop offset="0%" stop-color="#34d399" stop-opacity="0.45" />
+      <stop offset="60%" stop-color="#059669" stop-opacity="0.1" />
+      <stop offset="100%" stop-color="#000000" stop-opacity="0" />
+    </radialGradient>
+
+    <!-- Chrome / White Letter Gradient -->
+    <linearGradient id="letterGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" />
+      <stop offset="100%" stop-color="#d1fae5" />
+    </linearGradient>
+
+    <!-- Neon Accent Gradient -->
+    <linearGradient id="accentGrad" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#10b981" />
+      <stop offset="50%" stop-color="#34d399" />
+      <stop offset="100%" stop-color="#22d3ee" />
+    </linearGradient>
+
+    <!-- Drop Shadow for Letters -->
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="16" stdDeviation="24" flood-color="#021c17" flood-opacity="0.75" />
+    </filter>
+
+    <!-- Inner Glow for Squircle -->
+    <linearGradient id="borderGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6ee7b7" stop-opacity="0.6" />
+      <stop offset="50%" stop-color="#14b8a6" stop-opacity="0.2" />
+      <stop offset="100%" stop-color="#0f766e" stop-opacity="0.5" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background Squircle -->
+  <rect x="32" y="32" width="960" height="960" rx="220" ry="220" fill="url(#bgGrad)" />
+  <rect x="32" y="32" width="960" height="960" rx="220" ry="220" fill="url(#topGlow)" />
+  <rect x="32" y="32" width="960" height="960" rx="220" ry="220" fill="none" stroke="url(#borderGrad)" stroke-width="12" />
+
+  <!-- Dynamic Stylized ES Monogram Group -->
+  <g filter="url(#shadow)">
+    <!-- Letter E Elements -->
+    <!-- Vertical Spine of E -->
+    <rect x="220" y="270" width="80" height="484" rx="40" fill="url(#letterGrad)" />
+
+    <!-- Top Arm of E -->
+    <path d="M 220 310 C 220 287.9 237.9 270 260 270 L 460 270 C 482.1 270 500 287.9 500 310 C 500 332.1 482.1 350 460 350 L 260 350 C 237.9 350 220 332.1 220 310 Z" fill="url(#letterGrad)" />
+
+    <!-- Middle Arm of E (Dynamic Arrow Check) -->
+    <path d="M 220 512 C 220 489.9 237.9 472 260 472 L 430 472 C 452.1 472 470 489.9 470 512 C 470 534.1 452.1 552 430 552 L 260 552 C 237.9 552 220 534.1 220 512 Z" fill="url(#accentGrad)" />
+
+    <!-- Bottom Arm of E -->
+    <path d="M 220 714 C 220 691.9 237.9 674 260 674 L 460 674 C 482.1 674 500 691.9 500 714 C 500 736.1 482.1 754 460 754 L 260 754 C 237.9 754 220 736.1 220 714 Z" fill="url(#letterGrad)" />
+
+    <!-- Letter S / Dynamic Task Swoop -->
+    <!-- Top Arc of S -->
+    <path d="M 780 370 C 780 300 710 270 630 270 C 540 270 480 320 480 380 C 480 470 620 480 670 520 C 720 560 720 620 660 650 C 600 680 520 670 470 610" 
+          fill="none" 
+          stroke="url(#accentGrad)" 
+          stroke-width="84" 
+          stroke-linecap="round" 
+          stroke-linejoin="round" />
+
+    <!-- Integrated Executive Task Checkmark Floating Accent -->
+    <g transform="translate(620, 310)">
+      <circle cx="110" cy="-30" r="48" fill="#10b981" />
+      <circle cx="110" cy="-30" r="32" fill="#34d399" />
+      <path d="M 96 -30 L 106 -20 L 126 -40" fill="none" stroke="#042f2e" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+  </g>
+</svg>

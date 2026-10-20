@@ -1,0 +1,27 @@
+# Dependencies
+node_modules/
+
+# Rust build artifacts
+target/
+src-tauri/target/
+
+# Frontend build artifacts
+dist/
+
+# Logs & temporary files
+*.log
+crash.log
+*.tmp
+*.new_update
+apply_update.bat
+
+# SQLite local databases
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+*.bak*
+
+# OS metadata
+.DS_Store
+Thumbs.db
