@@ -30,6 +30,7 @@ export interface AppSettings {
   turso_token: string;
   ntfy_topic: string;
   github_repo: string;
+  github_token: string;
   admin_configured: boolean;
 }
 

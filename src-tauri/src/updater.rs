@@ -34,7 +34,7 @@ fn is_newer_version(remote: &str, local: &str) -> bool {
     false
 }
 
-pub async fn check_github_update(repo_or_url: &str) -> Result<UpdateCheckResult, String> {
+pub async fn check_github_update(repo_or_url: &str, token: Option<&str>) -> Result<UpdateCheckResult, String> {
     let trimmed = repo_or_url.trim();
 
     // Check if it's a test/mock request
@@ -70,15 +70,23 @@ pub async fn check_github_update(repo_or_url: &str) -> Result<UpdateCheckResult,
         format!("https://api.github.com/repos/{}/releases/latest", repo.trim_matches('/'))
     };
 
-    let response = client
-        .get(&target_url)
+    let mut req = client.get(&target_url);
+    if let Some(t) = token {
+        if !t.trim().is_empty() {
+            req = req.header("Authorization", format!("Bearer {}", t.trim()));
+            req = req.header("Accept", "application/vnd.github+json");
+            req = req.header("X-GitHub-Api-Version", "2022-11-28");
+        }
+    }
+
+    let response = req
         .send()
         .await
         .map_err(|e| format!("আপডেট সার্ভারে সংযোগ করা যায়নি: {}", e))?;
 
     if !response.status().is_success() {
         return Err(format!(
-            "সার্ভার থেকে ত্রুটি এসেছে (Status: {}). অনুগ্রহ করে GitHub রেপোজিটরি বা URL যাচাই করুন।",
+            "সার্ভার থেকে ত্রুটি এসেছে (Status: {}). অনুগ্রহ করে GitHub রেপোজিটরি বা টোকেন যাচাই করুন।",
             response.status()
         ));
     }
@@ -130,7 +138,10 @@ pub async fn check_github_update(repo_or_url: &str) -> Result<UpdateCheckResult,
         for asset in assets {
             if let Some(name) = asset["name"].as_str() {
                 if name.to_lowercase().contains("portable") && name.to_lowercase().ends_with(".exe") {
-                    download_url = asset["browser_download_url"].as_str().map(|s| s.to_string());
+                    let api_url = asset["url"].as_str().map(|s| s.to_string());
+                    let browser_url = asset["browser_download_url"].as_str().map(|s| s.to_string());
+                    // For private repos, use the API asset URL if token is present
+                    download_url = if token.is_some() && api_url.is_some() { api_url } else { browser_url };
                     file_size = asset["size"].as_u64();
                     break;
                 }
@@ -142,7 +153,9 @@ pub async fn check_github_update(repo_or_url: &str) -> Result<UpdateCheckResult,
             for asset in assets {
                 if let Some(name) = asset["name"].as_str() {
                     if name.to_lowercase().ends_with(".exe") {
-                        download_url = asset["browser_download_url"].as_str().map(|s| s.to_string());
+                        let api_url = asset["url"].as_str().map(|s| s.to_string());
+                        let browser_url = asset["browser_download_url"].as_str().map(|s| s.to_string());
+                        download_url = if token.is_some() && api_url.is_some() { api_url } else { browser_url };
                         file_size = asset["size"].as_u64();
                         break;
                     }
@@ -172,6 +185,7 @@ pub async fn check_github_update(repo_or_url: &str) -> Result<UpdateCheckResult,
 pub async fn download_and_apply_portable(
     app: AppHandle,
     download_url: &str,
+    token: Option<&str>,
 ) -> Result<String, String> {
     // 1. Get current running executable path
     let current_exe = std::env::current_exe()
@@ -195,8 +209,16 @@ pub async fn download_and_apply_portable(
         .build()
         .map_err(|e| format!("Client error: {}", e))?;
 
-    let response = client
-        .get(download_url)
+    let mut req = client.get(download_url);
+    if let Some(t) = token {
+        if !t.trim().is_empty() {
+            req = req.header("Authorization", format!("Bearer {}", t.trim()));
+            req = req.header("Accept", "application/octet-stream");
+            req = req.header("X-GitHub-Api-Version", "2022-11-28");
+        }
+    }
+
+    let response = req
         .send()
         .await
         .map_err(|e| format!("ফাইল ডাউনলোড সংযোগ ত্রুটি: {}", e))?;

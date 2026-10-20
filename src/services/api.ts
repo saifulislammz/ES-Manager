@@ -119,12 +119,14 @@ export const api = {
     tursoToken: string;
     ntfyTopic: string;
     githubRepo: string;
+    githubToken: string;
   }): Promise<void> => {
     await invoke('save_settings', {
       tursoUrl: settings.tursoUrl,
       tursoToken: settings.tursoToken,
       ntfyTopic: settings.ntfyTopic,
       githubRepo: settings.githubRepo,
+      githubToken: settings.githubToken,
     });
   },
 

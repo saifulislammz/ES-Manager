@@ -98,6 +98,7 @@ pub async fn create_task(
             turso_token: String::new(),
             ntfy_topic: "es_manager_tasks_channel".into(),
             github_repo: "saifulislammz/ES-Manager".into(),
+            github_token: String::new(),
             admin_configured: true,
         })
     };
@@ -162,6 +163,7 @@ pub async fn update_task_status(
             turso_token: String::new(),
             ntfy_topic: "es_manager_tasks_channel".into(),
             github_repo: "saifulislammz/ES-Manager".into(),
+            github_token: String::new(),
             admin_configured: true,
         })
     };
@@ -220,9 +222,10 @@ pub fn save_settings(
     turso_token: String,
     ntfy_topic: String,
     github_repo: String,
+    github_token: String,
 ) -> Result<(), String> {
     let conn = state.conn.lock().map_err(|e| e.to_string())?;
-    save_app_settings(&conn, &turso_url, &turso_token, &ntfy_topic, &github_repo).map_err(|e| e.to_string())?;
+    save_app_settings(&conn, &turso_url, &turso_token, &ntfy_topic, &github_repo, &github_token).map_err(|e| e.to_string())?;
     Ok(())
 }
 
@@ -273,6 +276,7 @@ pub async fn update_task(
             turso_token: String::new(),
             ntfy_topic: "es_manager_tasks_channel".into(),
             github_repo: "saifulislammz/ES-Manager".into(),
+            github_token: String::new(),
             admin_configured: true,
         })
     };
@@ -411,19 +415,29 @@ pub fn admin_delete_user(
 
 #[tauri::command]
 pub async fn check_for_updates(state: State<'_, DbState>) -> Result<UpdateCheckResult, String> {
-    let repo = {
+    let (repo, token) = {
         let conn = state.conn.lock().map_err(|e| e.to_string())?;
-        get_app_settings(&conn)
-            .map(|s| s.github_repo)
-            .unwrap_or_else(|_| "saifulislammz/ES-Manager".into())
+        match get_app_settings(&conn) {
+            Ok(s) => (s.github_repo, s.github_token),
+            Err(_) => ("saifulislammz/ES-Manager".into(), "".into()),
+        }
     };
 
-    check_github_update(&repo).await
+    let token_ref = if token.trim().is_empty() { None } else { Some(token.trim()) };
+    check_github_update(&repo, token_ref).await
 }
 
 #[tauri::command]
-pub async fn apply_update(app: tauri::AppHandle, download_url: String) -> Result<String, String> {
-    download_and_apply_portable(app, &download_url).await
+pub async fn apply_update(state: State<'_, DbState>, app: tauri::AppHandle, download_url: String) -> Result<String, String> {
+    let token = {
+        let conn = state.conn.lock().map_err(|e| e.to_string())?;
+        get_app_settings(&conn)
+            .map(|s| s.github_token)
+            .unwrap_or_default()
+    };
+
+    let token_ref = if token.trim().is_empty() { None } else { Some(token.trim()) };
+    download_and_apply_portable(app, &download_url, token_ref).await
 }
 
 

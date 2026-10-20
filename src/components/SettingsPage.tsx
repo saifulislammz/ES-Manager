@@ -17,7 +17,10 @@ import {
   Github,
   Laptop,
   CheckCircle,
-  FileText
+  FileText,
+  Lock,
+  Eye,
+  EyeOff
 } from 'lucide-react';
 
 interface SettingsPageProps {
@@ -42,8 +45,11 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({
     turso_token: '',
     ntfy_topic: 'es_manager_tasks_channel',
     github_repo: 'saifulislammz/ES-Manager',
+    github_token: '',
     admin_configured: true,
   });
+
+  const [showGithubToken, setShowGithubToken] = useState(false);
 
   const [saving, setSaving] = useState(false);
   const [syncing, setSyncing] = useState(false);
@@ -102,6 +108,7 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({
         tursoToken: settings.turso_token.trim(),
         ntfyTopic: settings.ntfy_topic.trim() || 'es_manager_tasks_channel',
         githubRepo: settings.github_repo.trim() || 'saifulislammz/ES-Manager',
+        githubToken: (settings.github_token || '').trim(),
       });
       setIntegrationStatus({ text: 'সেটিংস সফলভাবে সংরক্ষিত হয়েছে!' });
     } catch (err: unknown) {
@@ -601,7 +608,7 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({
                       <Github className="w-4 h-4 text-slate-800" />
                       GitHub আপডেট রেপোজিটরি (Update Source)
                     </span>
-                    <span className="text-[10px] text-slate-400">Releases API</span>
+                    <span className="text-[10px] text-slate-400">Private Releases Supported</span>
                   </div>
 
                   <div>
@@ -617,6 +624,35 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({
                     />
                     <p className="text-[11px] text-slate-400 mt-1">
                       ইউজাররা যখন 'আপডেট চেক করুন' বাটনে ক্লিক করবে, সফটওয়্যার এই রেপোজিটরির সর্বশেষ রিলিজ থেকে নতুন পোর্টেবল ফাইল ডাউনলোড করবে।
+                    </p>
+                  </div>
+
+                  <div>
+                    <div className="flex items-center justify-between mb-1">
+                      <label className="block font-semibold text-slate-700">
+                        GitHub Token (Private Repository Access)
+                      </label>
+                      <button
+                        type="button"
+                        onClick={() => setShowGithubToken(!showGithubToken)}
+                        className="text-[11px] text-slate-500 hover:text-slate-800 flex items-center gap-1 transition-colors"
+                      >
+                        {showGithubToken ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
+                        {showGithubToken ? 'লুকান' : 'দেখান'}
+                      </button>
+                    </div>
+                    <div className="relative">
+                      <input
+                        type={showGithubToken ? 'text' : 'password'}
+                        value={settings.github_token || ''}
+                        onChange={(e) => setSettings({ ...settings, github_token: e.target.value })}
+                        placeholder="ghp_... অথবা gho_..."
+                        className="w-full bg-white border border-slate-200 rounded-xl pl-8 pr-3 py-2 text-xs text-slate-900 focus:outline-none focus:border-emerald-500 font-mono"
+                      />
+                      <Lock className="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-2.5" />
+                    </div>
+                    <p className="text-[11px] text-slate-400 mt-1">
+                      রেপোজিটরি Private (গোপনীয়) হওয়ায় ইউজারদের সফটওয়্যার এই টোকেনের মাধ্যমে রিলিজ চেক ও রিলিজ ফাইল ডাউনলোড করতে পারবে।
                     </p>
                   </div>
                 </div>

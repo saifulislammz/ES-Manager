@@ -51,6 +51,7 @@ pub struct AppSettings {
     pub turso_token: String,
     pub ntfy_topic: String,
     pub github_repo: String,
+    pub github_token: String,
     pub admin_configured: bool,
 }
 

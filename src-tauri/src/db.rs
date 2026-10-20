@@ -531,6 +531,7 @@ pub fn get_app_settings(conn: &Connection) -> Result<AppSettings> {
     let mut turso_token = String::new();
     let mut ntfy_topic = "es_manager_tasks_channel".to_string();
     let mut github_repo = "saifulislammz/ES-Manager".to_string();
+    let mut github_token = String::new();
 
     let mut stmt = conn.prepare("SELECT key, value FROM settings;")?;
     let rows = stmt.query_map([], |row| {
@@ -546,9 +547,14 @@ pub fn get_app_settings(conn: &Connection) -> Result<AppSettings> {
                 "turso_token" => turso_token = v,
                 "ntfy_topic" => ntfy_topic = v,
                 "github_repo" => github_repo = v,
+                "github_token" => github_token = v,
                 _ => {}
             }
         }
+    }
+
+    if github_token.trim().is_empty() {
+        github_token = "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".to_string();
     }
 
     Ok(AppSettings {
@@ -556,6 +562,7 @@ pub fn get_app_settings(conn: &Connection) -> Result<AppSettings> {
         turso_token,
         ntfy_topic,
         github_repo,
+        github_token,
         admin_configured: true,
     })
 }
@@ -566,6 +573,7 @@ pub fn save_app_settings(
     turso_token: &str,
     ntfy_topic: &str,
     github_repo: &str,
+    github_token: &str,
 ) -> Result<()> {
     conn.execute(
         "INSERT INTO settings (key, value) VALUES ('turso_url', ?1) ON CONFLICT(key) DO UPDATE SET value = ?1;",
@@ -582,6 +590,10 @@ pub fn save_app_settings(
     conn.execute(
         "INSERT INTO settings (key, value) VALUES ('github_repo', ?1) ON CONFLICT(key) DO UPDATE SET value = ?1;",
         params![github_repo],
+    )?;
+    conn.execute(
+        "INSERT INTO settings (key, value) VALUES ('github_token', ?1) ON CONFLICT(key) DO UPDATE SET value = ?1;",
+        params![github_token],
     )?;
     Ok(())
 }

@@ -30,6 +30,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
     turso_token: '',
     ntfy_topic: 'es_manager_tasks_channel',
     github_repo: 'saifulislammz/ES-Manager',
+    github_token: '',
     admin_configured: true,
   });
 
@@ -66,6 +67,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
         tursoToken: settings.turso_token.trim(),
         ntfyTopic: settings.ntfy_topic.trim() || 'es_manager_tasks_channel',
         githubRepo: settings.github_repo.trim() || 'saifulislammz/ES-Manager',
+        githubToken: settings.github_token || '',
       });
       setStatusMessage({ text: 'সেটিংস সফলভাবে সংরক্ষিত হয়েছে!' });
     } catch (err: unknown) {
