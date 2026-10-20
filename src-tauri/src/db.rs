@@ -530,7 +530,7 @@ pub fn get_app_settings(conn: &Connection) -> Result<AppSettings> {
     let mut turso_url = String::new();
     let mut turso_token = String::new();
     let mut ntfy_topic = "es_manager_tasks_channel".to_string();
-    let mut github_repo = "saiful/ES-Manager".to_string();
+    let mut github_repo = "saifulislammz/ES-Manager".to_string();
 
     let mut stmt = conn.prepare("SELECT key, value FROM settings;")?;
     let rows = stmt.query_map([], |row| {

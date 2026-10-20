@@ -41,7 +41,7 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({
     turso_url: '',
     turso_token: '',
     ntfy_topic: 'es_manager_tasks_channel',
-    github_repo: 'saiful/ES-Manager',
+    github_repo: 'saifulislammz/ES-Manager',
     admin_configured: true,
   });
 
@@ -101,7 +101,7 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({
         tursoUrl: settings.turso_url.trim(),
         tursoToken: settings.turso_token.trim(),
         ntfyTopic: settings.ntfy_topic.trim() || 'es_manager_tasks_channel',
-        githubRepo: settings.github_repo.trim() || 'saiful/ES-Manager',
+        githubRepo: settings.github_repo.trim() || 'saifulislammz/ES-Manager',
       });
       setIntegrationStatus({ text: 'সেটিংস সফলভাবে সংরক্ষিত হয়েছে!' });
     } catch (err: unknown) {
@@ -612,7 +612,7 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({
                       type="text"
                       value={settings.github_repo}
                       onChange={(e) => setSettings({ ...settings, github_repo: e.target.value })}
-                      placeholder="e.g. saiful/ES-Manager"
+                      placeholder="e.g. saifulislammz/ES-Manager"
                       className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-900 focus:outline-none focus:border-emerald-500 font-mono"
                     />
                     <p className="text-[11px] text-slate-400 mt-1">

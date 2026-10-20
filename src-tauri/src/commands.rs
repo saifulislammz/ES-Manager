@@ -97,7 +97,7 @@ pub async fn create_task(
             turso_url: String::new(),
             turso_token: String::new(),
             ntfy_topic: "es_manager_tasks_channel".into(),
-            github_repo: "saiful/ES-Manager".into(),
+            github_repo: "saifulislammz/ES-Manager".into(),
             admin_configured: true,
         })
     };
@@ -161,7 +161,7 @@ pub async fn update_task_status(
             turso_url: String::new(),
             turso_token: String::new(),
             ntfy_topic: "es_manager_tasks_channel".into(),
-            github_repo: "saiful/ES-Manager".into(),
+            github_repo: "saifulislammz/ES-Manager".into(),
             admin_configured: true,
         })
     };
@@ -272,7 +272,7 @@ pub async fn update_task(
             turso_url: String::new(),
             turso_token: String::new(),
             ntfy_topic: "es_manager_tasks_channel".into(),
-            github_repo: "saiful/ES-Manager".into(),
+            github_repo: "saifulislammz/ES-Manager".into(),
             admin_configured: true,
         })
     };
@@ -415,7 +415,7 @@ pub async fn check_for_updates(state: State<'_, DbState>) -> Result<UpdateCheckR
         let conn = state.conn.lock().map_err(|e| e.to_string())?;
         get_app_settings(&conn)
             .map(|s| s.github_repo)
-            .unwrap_or_else(|_| "saiful/ES-Manager".into())
+            .unwrap_or_else(|_| "saifulislammz/ES-Manager".into())
     };
 
     check_github_update(&repo).await

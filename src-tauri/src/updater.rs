@@ -43,7 +43,7 @@ pub async fn check_github_update(repo_or_url: &str) -> Result<UpdateCheckResult,
             update_available: true,
             current_version: CURRENT_VERSION.to_string(),
             latest_version: "1.1.0".to_string(),
-            download_url: Some("https://github.com/saiful/ES-Manager/releases/download/v1.1.0/ES-Manager-Portable.exe".into()),
+            download_url: Some("https://github.com/saifulislammz/ES-Manager/releases/download/v1.1.0/ES-Manager-Portable.exe".into()),
             release_notes: Some("• নতুন অটো-আপডেট ফিচার যুক্ত করা হয়েছে\n• টাস্ক ফিল্টারিং আরও দ্রুত ও অপটিমাইজ করা হয়েছে\n• বাগ ফিক্স এবং সিকিউরিটি আপডেট".into()),
             published_at: Some("২০২৬-১০-২০".into()),
             file_size: Some(14822912),
@@ -63,7 +63,7 @@ pub async fn check_github_update(repo_or_url: &str) -> Result<UpdateCheckResult,
     } else {
         // Assume GitHub owner/repo format e.g. "Saiful/ES-Manager"
         let repo = if trimmed.is_empty() {
-            "saiful/ES-Manager"
+            "saifulislammz/ES-Manager"
         } else {
             trimmed
         };
